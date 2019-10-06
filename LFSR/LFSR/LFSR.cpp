@@ -86,15 +86,49 @@ public:
 	}
 };
 
+int difficult(int *z, int count) {
+	int r = 0,
+		//b = 1,
+		delta = 0,
+		t = 0;
+	int c[10];
+	c[0] = 1;
+	int b[10];
+	b[0] = 1;
+	for (int i = 0; i < 8; i++) {
+		r++;
+		delta = z[r - 1];
+		for (int j = 1; j < r - 1; j++) {
+			delta ^= c[j] * z[r - j];
+		}
+		if (delta == 0) {
+			//b(x) = xb(x)
+			b[r] = b[r-1] << 1;
+			c[r] = c[r - 1];
+		}
+		else {
+			//t(x) = c(x) + xb(x);
+			t = c[r - 1] + (b[r - 1] << 1);
+			b[r] = c[r - 1];
+			c[r] = t;
+		}
+	}
+	return 0;
+}
+
 int main()
 {
 	setlocale(LC_ALL, "Russian");
 	int value[3] = { 0, 0 ,1 };
 	gen_lfsr gn = gen_lfsr(13, 3, value);
-	for (int i = 0; i < 20; i++) {
-		cout << "\nСгенерированное число " << gn.generate();
+	int* mas = new int[20];
+	for (int i = 0; i < 8; i++) {
+		mas[i] = gn.generate();
+		cout << "\nСгенерированное число " << mas[i];
 	}
-    std::cout << "\nHello World!\n";
+	int mas2[22] = { 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1 };
+	difficult(mas2, 0);
+	std::cout << "\nHello World!\n";
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
