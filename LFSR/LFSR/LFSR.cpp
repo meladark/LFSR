@@ -86,31 +86,27 @@ public:
 	}
 };
 
+
 int difficult(int *z, int count) {
 	int r = 0,
-		//b = 1,
 		delta = 0,
-		t = 0;
-	int c[10];
-	c[0] = 1;
-	int b[10];
-	b[0] = 1;
-	for (int i = 0; i < 8; i++) {
+		t = 0, c = 1, b = 1, sub = 0, counter = 0;
+	for (int i = 0; i < count; i++) {
+		///
+		cout << "\nr " << r << " Zr " << z[r] << " delta " << delta << " c " << c << " b " << b;
+		///
 		r++;
-		delta = z[r - 1];
+		delta = z[r];
 		for (int j = 1; j < r - 1; j++) {
-			delta ^= c[j] * z[r - j];
+			delta ^= ((c >> j) & 1u)* z[r - j];
 		}
 		if (delta == 0) {
-			//b(x) = xb(x)
-			b[r] = b[r-1] << 1;
-			c[r] = c[r - 1];
+			b = b << 1;
 		}
 		else {
-			//t(x) = c(x) + xb(x);
-			t = c[r - 1] + (b[r - 1] << 1);
-			b[r] = c[r - 1];
-			c[r] = t;
+			t = c + (b << 1);
+			b = c;
+			c = t;
 		}
 	}
 	return 0;
@@ -122,12 +118,13 @@ int main()
 	int value[3] = { 0, 0 ,1 };
 	gen_lfsr gn = gen_lfsr(13, 3, value);
 	int* mas = new int[20];
-	for (int i = 0; i < 8; i++) {
+	int count = 20;
+	for (int i = 0; i < count; i++) {
 		mas[i] = gn.generate();
 		cout << "\nСгенерированное число " << mas[i];
 	}
-	int mas2[22] = { 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1 };
-	difficult(mas2, 0);
+	int mas2[23] = {10, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1 };
+	difficult(mas, count);
 	std::cout << "\nHello World!\n";
 }
 
