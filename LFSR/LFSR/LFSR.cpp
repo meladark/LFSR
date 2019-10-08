@@ -38,19 +38,19 @@ struct gen_lfsr
 	}
 public:
 	int generate() {
-		int result = 0;
-		bool equal = false;
+		int result(0);
+		bool equal(false);
 		list_lfsr* sub_point;
 		///
 		cout << "\nМассив ";
 		sub_point = point_first;
-		for (int i = 0; i < step - 1; i++) {
+		for (int i(0); i < step - 1; i++) {
 			cout << sub_point->value;
 			sub_point = sub_point->point_next;
 		}
 		///
 		sub_point = point_first;
-		for (int i = 1; i < this->step - 1; i++) {
+		for (int i(1); i < this->step - 1; i++) {
 			if (poly[i]) {
 				if (equal) {
 					result ^= sub_point->value;
@@ -88,13 +88,8 @@ public:
 
 
 int difficult(int *z, int count) {
-	int r = 0,
-		delta = 0,
-		t = 0, c = 1, b = 1, sub = 0, counter = 0;
-	for (int i = 0; i < count; i++) {
-		///
-		cout << "\nr " << r << " Zr " << z[r] << " delta " << delta << " c " << c << " b " << b;
-		///
+	int r(0), delta(0),t(0), c(1), b(1), counter(0);
+	for (int i(0); i < count - 1; i++) {
 		r++;
 		delta = z[r];
 		for (int j = 1; j < r - 1; j++) {
@@ -108,23 +103,30 @@ int difficult(int *z, int count) {
 			b = c;
 			c = t;
 		}
+		cout << "\nr " << r << " Zr " << z[r] << " delta " << delta << " c " << c << " b " << b;
 	}
-	return 0;
+	int i(8 * sizeof(c));
+	while (i != -1 && !((c >> --i) & 1));
+	return i;
 }
 
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	int value[3] = { 0, 0 ,1 };
-	gen_lfsr gn = gen_lfsr(13, 3, value);
+	int value[3] = { 1, 0 };
+	int polynom(3);
+	int i(8 * sizeof(polynom));
+	while (i != -1 && !((polynom >> --i) & 1));
+	int count(2 * i);
+	gen_lfsr gn = gen_lfsr(polynom, count, value);
 	int* mas = new int[20];
-	int count = 20;
-	for (int i = 0; i < count; i++) {
+	
+	for (int i(0); i < count; i++) {
 		mas[i] = gn.generate();
 		cout << "\nСгенерированное число " << mas[i];
 	}
-	int mas2[23] = {10, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1 };
-	difficult(mas, count);
+	int mas2[11] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1 };
+	cout << "\nЛинейная сложность " << difficult(mas, count);
 	std::cout << "\nHello World!\n";
 }
 
