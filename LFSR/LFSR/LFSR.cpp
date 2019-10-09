@@ -4,7 +4,6 @@
 #include <iostream>
 #include <thread>
 #include <io.h>
-//#include <list>
 
 using namespace std;
 
@@ -37,7 +36,7 @@ struct gen_lfsr
 		point_first = convert();
 	}
 public:
-	int generate() {
+	int generate() { //todo: переделать генерацию, так как ксорятся все x 
 		int result(0);
 		bool equal(false);
 		list_lfsr* sub_point;
@@ -62,7 +61,7 @@ public:
 			}
 			sub_point = sub_point->point_next;
 		}
-		if (poly[this->step]) {
+		if (poly[this->step - 1]) {
 			if (equal) {
 				result ^= sub_point->value;
 			}
@@ -113,19 +112,19 @@ int difficult(int *z, int count) {
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	int value[3] = { 1, 0 };
-	int polynom(3);
+	int value[6] = { 1,0,0,1,1,1 };
+	int polynom(90);
 	int i(8 * sizeof(polynom));
 	while (i != -1 && !((polynom >> --i) & 1));
 	int count(2 * i);
-	gen_lfsr gn = gen_lfsr(polynom, count, value);
+	gen_lfsr gn = gen_lfsr(polynom, sizeof(value)/sizeof(int), value);
 	int* mas = new int[20];
 	
 	for (int i(0); i < count; i++) {
 		mas[i] = gn.generate();
 		cout << "\nСгенерированное число " << mas[i];
 	}
-	int mas2[11] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1 };
+	int mas2[12] = {0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1 };
 	cout << "\nЛинейная сложность " << difficult(mas, count);
 	std::cout << "\nHello World!\n";
 }
