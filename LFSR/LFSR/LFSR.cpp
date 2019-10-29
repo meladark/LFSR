@@ -112,8 +112,8 @@ int difficult(int *z, int count) {
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	int value[6] = { 1,0,0,1,1,1 };
-	int polynom(90);
+	int value[6] = { 0,1,0,0,0,1 };
+	int polynom(34);
 	int i(8 * sizeof(polynom));
 	while (i != -1 && !((polynom >> --i) & 1));
 	int count(2 * i);
