@@ -85,9 +85,24 @@ public:
 	}
 };
 
+void sub_fun(int r, int delta, int t, int c,int b, int L, int *z) {
+	cout << "\nr " << r << " Zr " << z[r] << " delta " << delta << " c ";// << c << " b " << b;
+	for (int j = 0; j < 32; j++) {
+		if ((c >> j) & 1) {
+			cout << "+x^" << j;
+		}
+	}
+	cout << " b ";
+	for (int j = 0; j < 32; j++) {
+		if ((b >> j) & 1) {
+			cout << "+x^" << j;
+		}
+	}
+	cout << " L " << L;
+}
 
 int difficult(int *z, int count) {
-	int r(0), delta(0),t(0), c(1), b(1), counter(0);
+	int r(0), delta(0), t(0), c(1), b(1), counter(0), L(0);
 	for (int i(0); i < count - 1; i++) {
 		r++;
 		delta = z[r];
@@ -96,14 +111,34 @@ int difficult(int *z, int count) {
 		}
 		if (delta == 0) {
 			b = b << 1;
+			sub_fun(r, delta, t, c, b, L, z);
+			continue;
 		}
 		else {
-			t = c + (b << 1);
+			t = c ^ (b << 1);
+		}
+		if ((2 * L) <= (r - 1)) {
 			b = c;
 			c = t;
+			L = r - L;
+			sub_fun(r, delta, t, c, b, L, z);
+			continue;
 		}
-		cout << "\nr " << r << " Zr " << z[r] << " delta " << delta << " c " << c << " b " << b;
+		else {
+			c = t;
+			b = b << 1;
+		}
+		///вывод
+		sub_fun(r, delta, t, c, b, L, z);
 	}
+	cout << endl;
+	cout << "Итоговый вектор ";
+	for (int j = 0; j < 32; j++) {
+		if ((c >> j) & 1) {
+			cout << "+x^" << j;
+		}
+	}
+	cout << endl;
 	int i(8 * sizeof(c));
 	while (i != -1 && !((c >> --i) & 1));
 	return i;
@@ -124,8 +159,8 @@ int main()
 		mas[i] = gn.generate();
 		cout << "\nСгенерированное число " << mas[i];
 	}
-	int mas2[12] = {0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1 };
-	cout << "\nЛинейная сложность " << difficult(mas, count);
+	int mas2[13] = {0,0,1,0,1,1,1,1,0,0,0,1,0 };
+	cout << "\nЛинейная сложность " << difficult(mas2, 13);
 	std::cout << "\nHello World!\n";
 }
 
