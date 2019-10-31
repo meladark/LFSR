@@ -17,6 +17,7 @@ struct list_lfsr
 	}
 };
 
+//template <typename T>
 struct gen_lfsr
 {
 	int step;
@@ -30,10 +31,17 @@ struct gen_lfsr
 		for (int i = 0; i < step; i++) {
 			poly[i] = (((int)pow(2, i) & polinom) >> i) > 0 ? true : false;
 			///
-			std::cout << poly[i];
+			if (poly[i]) {
+				if (i == 0) std::cout << "1";
+				else std::cout << "+x^" << i;
+			}
+				
 			///
 		}
 		point_first = convert();
+	}
+	~gen_lfsr() {
+		
 	}
 public:
 	int generate() { //todo: переделать генерацию, так как ксорятся все x 
@@ -86,14 +94,20 @@ public:
 };
 
 void sub_fun(int r, int delta, int t, int c,int b, int L, int *z) {
-	cout << "\nr " << r << " Zr " << z[r] << " delta " << delta << " c ";// << c << " b " << b;
-	for (int j = 0; j < 32; j++) {
+	cout << "\nr " << r << " Zr " << z[r - 1] << " delta " << delta << " c ";// << c << " b " << b;
+	if (c & 1) {
+		cout << "1";
+	}
+	for (int j = 1; j < 32; j++) {
 		if ((c >> j) & 1) {
 			cout << "+x^" << j;
 		}
 	}
 	cout << " b ";
-	for (int j = 0; j < 32; j++) {
+	if (b & 1) {
+		cout << "1";
+	}
+	for (int j = 1; j < 32; j++) {
 		if ((b >> j) & 1) {
 			cout << "+x^" << j;
 		}
@@ -101,13 +115,13 @@ void sub_fun(int r, int delta, int t, int c,int b, int L, int *z) {
 	cout << " L " << L;
 }
 
-int difficult(int *z, int count) {
+void difficult(int *z, int count, int *result) {
 	int r(0), delta(0), t(0), c(1), b(1), counter(0), L(0);
-	for (int i(0); i < count - 1; i++) {
+	for (int i(0); i < count; i++) {
 		r++;
-		delta = z[r];
-		for (int j = 1; j < r - 1; j++) {
-			delta ^= ((c >> j) & 1u)* z[r - j];
+		delta = z[r - 1];
+		for (int j = 1; j <= L; j++) {
+			delta ^= ((c >> j) & 1u)* z[r - j - 1];
 		}
 		if (delta == 0) {
 			b = b << 1;
@@ -132,35 +146,55 @@ int difficult(int *z, int count) {
 		sub_fun(r, delta, t, c, b, L, z);
 	}
 	cout << endl;
-	cout << "Итоговый вектор ";
-	for (int j = 0; j < 32; j++) {
+	/*cout << "Итоговый вектор ";
+	if (c & 1) {
+		cout << "1";
+	}
+	for (int j = 1; j < 32; j++) {
 		if ((c >> j) & 1) {
 			cout << "+x^" << j;
 		}
 	}
-	cout << endl;
-	int i(8 * sizeof(c));
-	while (i != -1 && !((c >> --i) & 1));
-	return i;
+	cout << endl;*/
+	result[0] = L;
+	result[1] = c;
 }
+
+//template <class T>
+struct still_lfsr {
+	int polynom = 0;
+	int* in_vec_value = NULL; //input vector value
+	int* generate_vec = NULL;
+	int min_polynom = 0;
+	int min_exp = 0;
+	still_lfsr(int polynom = NULL, int* in_vec_value = NULL, int step = 0) {
+			int exp = 2 * step + 1;
+			gen_lfsr gn = gen_lfsr(polynom, step, in_vec_value);
+			generate_vec = new int[exp];
+			for (int i = 0; i < exp; i++) {
+				generate_vec[i] = gn.generate();
+				cout << " Сгенерированное значение " << generate_vec[i];
+			}
+			int* result = new int[2];
+			difficult(generate_vec, exp, result);
+			min_polynom = result[0];
+			min_exp = result[1];
+			delete[] result;
+	}
+};
 
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	int value[6] = { 0,1,0,0,0,1 };
-	int polynom(34);
-	int i(8 * sizeof(polynom));
-	while (i != -1 && !((polynom >> --i) & 1));
-	int count(2 * i);
-	gen_lfsr gn = gen_lfsr(polynom, sizeof(value)/sizeof(int), value);
-	int* mas = new int[20];
-	
-	for (int i(0); i < count; i++) {
-		mas[i] = gn.generate();
-		cout << "\nСгенерированное число " << mas[i];
-	}
-	int mas2[13] = {0,0,1,0,1,1,1,1,0,0,0,1,0 };
-	cout << "\nЛинейная сложность " << difficult(mas2, 13);
+	int value[5] = { 1,0,0,0,0 };
+	int polynom(23);
+	still_lfsr *LFSR1 = new still_lfsr(polynom, value, sizeof(value) / sizeof(int));
+	polynom = 25;
+	int value2[4] = { 1,0,1,0 };
+	still_lfsr *LFSR2 = new still_lfsr(polynom, value2, sizeof(value2) / sizeof(int));
+	polynom = 35;
+	int value3[6] = { 0,1,0,0,0,1 };
+	still_lfsr* LFSR3 = new still_lfsr(polynom, value3, sizeof(value3) / sizeof(int));
 	std::cout << "\nHello World!\n";
 }
 
