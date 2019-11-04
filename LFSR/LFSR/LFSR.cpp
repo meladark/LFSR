@@ -4,6 +4,10 @@
 #include <iostream>
 #include <thread>
 #include <io.h>
+#include <stdio.h>
+#include <fstream>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -146,16 +150,6 @@ void difficult(int *z, int count, int *result) {
 		sub_fun(r, delta, t, c, b, L, z);
 	}
 	cout << endl;
-	/*cout << "Итоговый вектор ";
-	if (c & 1) {
-		cout << "1";
-	}
-	for (int j = 1; j < 32; j++) {
-		if ((c >> j) & 1) {
-			cout << "+x^" << j;
-		}
-	}
-	cout << endl;*/
 	result[0] = L;
 	result[1] = c;
 }
@@ -183,18 +177,109 @@ struct still_lfsr {
 	}
 };
 
+void read_hex_(const char* file_txt, vector<still_lfsr*> *all_lfsr) {
+	ifstream input(file_txt, ios::binary);
+	char x('h'), y('k'), sub('o');
+	input >> x;
+	for (int i(0); i < (int)x; i++) {
+		int lf(0);
+		input >> y;
+		for (int j(0); j < (int)y; j++) {
+			input >> sub;
+			lf += (int)sub * pow(2, (int)y - j);
+		}
+		lf++;
+		int* mas = new int[(int)y];
+		for (int j(0); j < (int)y; j++) {
+			input >> sub;
+			mas[j] = (int)sub;
+		}
+		all_lfsr->push_back(new still_lfsr(lf, mas, (int)y));
+	}
+	input.close();
+}
+
+void multip(int* a, int *b, int* result, int size, int first_point = 0) {
+	for (int i(first_point); i < size; i++) {
+		result[i] = a[i] * b[i];
+	}
+}
+
+void sum(int* a, int* b, int* result, int size, int first_point = 0) {
+	for (int i(0); i < size; i++) {
+		result[i] = a[i] ^ b[i];
+	}
+}
+
+void multip_thread(int* a, int* b, int* result, int size, int num_threads = 1) {
+	vector<thread> threads(num_threads);
+	if (size % num_threads == 0) {
+		int new_size = size / num_threads;
+		for (int i(0); i < num_threads; i++) {
+			threads[i] = thread(multip, a, b, result, new_size, new_size * i);
+		}
+		for (auto& th : threads) {
+			th.join();
+		}
+	}
+	else {
+		int balalne = size % num_threads;
+		int whole = size / num_threads;
+		for (int i(0); i < whole - 1; i++) {
+			threads[i] = thread(multip, a, b, result, whole, whole * i);
+		}
+		num_threads--;
+		threads[num_threads] = thread(multip, a, b, result, whole + balalne, whole * num_threads);
+	}
+}
+
+void sum_thread(int* a, int* b, int* result, int size, int num_threads = 1) {
+	vector<thread> threads(num_threads);
+	if (size % num_threads == 0) {
+		int new_size = size / num_threads;
+		for (int i(0); i < num_threads; i++) {
+			threads[i] = thread(sum, a, b, result, new_size, new_size * i);
+		}
+		for (auto& th : threads) {
+			th.join();
+		}
+	}
+	else {
+		int balalne = size % num_threads;
+		int whole = size / num_threads;
+		for (int i(0); i < whole - 1; i++) {
+			threads[i] = thread(sum, a, b, result, whole, whole * i);
+		}
+		num_threads--;
+		threads[num_threads] = thread(sum, a, b, result, whole + balalne, whole * num_threads);
+	}
+
+}
+
+void operations(vector<still_lfsr> all_lfsr) {
+
+}
+
 int main()
 {
 	setlocale(LC_ALL, "Russian");
+	double time = clock();
 	int value[5] = { 1,0,0,0,0 };
 	int polynom(23);
-	still_lfsr *LFSR1 = new still_lfsr(polynom, value, sizeof(value) / sizeof(int));
+	still_lfsr* LFSR1 = new still_lfsr(polynom, value, sizeof(value) / sizeof(int));
 	polynom = 25;
 	int value2[4] = { 1,0,1,0 };
-	still_lfsr *LFSR2 = new still_lfsr(polynom, value2, sizeof(value2) / sizeof(int));
+	still_lfsr* LFSR2 = new still_lfsr(polynom, value2, sizeof(value2) / sizeof(int));
 	polynom = 35;
 	int value3[6] = { 0,1,0,0,0,1 };
 	still_lfsr* LFSR3 = new still_lfsr(polynom, value3, sizeof(value3) / sizeof(int));
+	
+	//
+	std::ofstream outfile("test2.txt");
+	vector<still_lfsr*> *all_lfsr = new vector<still_lfsr*>();
+	const char* fn = "F:\\LFSR\\LFSR\\LFSR\\test.hex";
+	read_hex_(fn, all_lfsr);
+	cout << "Время выполнения все программы " << clock() - time << " с";
 	std::cout << "\nHello World!\n";
 }
 
