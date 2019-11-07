@@ -1,3 +1,2 @@
 ﻿  LFSR.cpp
-F:\LFSR\LFSR\LFSR\LFSR.cpp(189,39): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
   LFSR.vcxproj -> F:\LFSR\LFSR\x64\Debug\LFSR.exe
