@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <malloc.h>
 
 using namespace std;
 template <typename T>
@@ -107,7 +108,7 @@ public:
 	}
 };
 
-void sub_fun(int r, int delta, int t, int c,int b, int L, int *z) {
+void sub_fun(int r, unsigned long long delta, unsigned long long t, unsigned long long c, unsigned long long b, unsigned long long L, int *z) {
 	cout << "\nr " << r << " Zr " << z[r - 1] << " delta " << delta << " c ";// << c << " b " << b;
 	logging("\nr ");
 	logging(r);
@@ -120,7 +121,7 @@ void sub_fun(int r, int delta, int t, int c,int b, int L, int *z) {
 		logging("1");
 		cout << "1";
 	}
-	for (int j = 1; j < 32; j++) {
+	for (int j = 1; j < sizeof(unsigned long long) * 8; j++) {
 		if ((c >> j) & 1) {
 			cout << "+x^" << j;
 			logging("+x^"); logging(j);
@@ -132,7 +133,7 @@ void sub_fun(int r, int delta, int t, int c,int b, int L, int *z) {
 		cout << "1";
 		logging("1");
 	}
-	for (int j = 1; j < 32; j++) {
+	for (int j = 1; j < sizeof(unsigned long long) * 8; j++) {
 		if ((b >> j) & 1) {
 			cout << "+x^" << j;
 			logging("+x^"); logging(j);
@@ -143,12 +144,12 @@ void sub_fun(int r, int delta, int t, int c,int b, int L, int *z) {
 }
 
 void difficult(int *z, int count, int *result) {
-	int r(0), delta(0), t(0), c(1), b(1), counter(0), L(0);
+	unsigned long long r(0), delta(0), t(0), c(1), b(1), counter(0), L(0);
 	for (int i(0); i < count; i++) {
 		r++;
-		delta = z[r - 1];
+		delta = (unsigned long long)z[r - 1];
 		for (int j = 1; j <= L; j++) {
-			delta ^= ((c >> j) & 1u)* z[r - j - 1];
+			delta ^= ((c >> j) & 1u)* (unsigned long long)z[r - j - 1];
 		}
 		if (delta == 0) {
 			b = b << 1;
@@ -174,8 +175,8 @@ void difficult(int *z, int count, int *result) {
 	}
 	cout << endl;
 	logging('\n');
-	result[0] = L;
-	result[1] = c;
+	result[0] = (int)L;
+	result[1] = (int)c;
 }
 
 //template <class T>
@@ -249,7 +250,7 @@ class still_lfsr {
 public:
 	int polynom = 0;
 	int* in_vec_value = NULL; //input vector value
-	int* generate_vec = NULL;
+	int* generate_vec = new int[1];
 	int min_polynom = 0;
 	int min_exp = 0;
 	int exp = 0;
@@ -330,10 +331,17 @@ public:
 	}
 };
 
-void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr) {
+void thr(still_lfsr** all_lfsr, int i, int lf, int* mas, int y) {
+	still_lfsr *st = new still_lfsr(lf, mas, y);
+	all_lfsr[i] = st;
+}
+
+void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, bool thrb = true) {
 	ifstream input(file_txt, ios::binary);
 	char x('h'), y('k'), sub('o');
 	input >> x;
+	vector<thread> threads((int)x);
+	still_lfsr** stl = (still_lfsr**)malloc((int)x * sizeof(still_lfsr*));
 	for (int i(0); i < (int)x; i++) {
 		int lf(0);
 		input >> y;
@@ -347,7 +355,20 @@ void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr) {
 			input >> sub;
 			mas[j] = (int)sub;
 		}
-		all_lfsr->push_back(new still_lfsr(lf, mas, (int)y));
+		if (thrb) {
+			threads[i] = thread(thr, stl, i, lf, mas, (int)y);
+		}
+		else {
+			all_lfsr->push_back(new still_lfsr(lf, mas, (int)y));
+		}
+	}
+	if (thrb) {
+		for (auto& th : threads) {
+			th.join();
+		}
+		for (int i(0); i < (int)x; i++) {
+			all_lfsr->push_back(stl[i]);
+		}
 	}
 	input.close();
 }
