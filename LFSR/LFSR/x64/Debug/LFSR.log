@@ -1,5 +1,6 @@
 ﻿  LFSR.cpp
-F:\LFSR\LFSR\LFSR\LFSR.cpp(156,12): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
-F:\LFSR\LFSR\LFSR\LFSR.cpp(166,12): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
-F:\LFSR\LFSR\LFSR\LFSR.cpp(174,11): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+F:\LFSR\LFSR\LFSR\LFSR.cpp(39,1): warning C4244: +=: преобразование "double" в "__int64", возможна потеря данных
+F:\LFSR\LFSR\LFSR\LFSR.cpp(200,12): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+F:\LFSR\LFSR\LFSR\LFSR.cpp(210,12): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+F:\LFSR\LFSR\LFSR\LFSR.cpp(218,11): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
   LFSR.vcxproj -> F:\LFSR\LFSR\x64\Debug\LFSR.exe

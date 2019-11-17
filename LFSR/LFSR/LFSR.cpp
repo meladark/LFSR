@@ -8,9 +8,11 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <deque>
 #include <malloc.h>
 
 using namespace std;
+
 template <typename T>
 void logging(T in) {
 	return;
@@ -21,6 +23,47 @@ void logging(T in) {
 	}
 	out.close();
 }
+
+struct infint
+{
+	deque<bool> b;
+	infint(int x) {
+		for (int i(0); i < sizeof(x) * 8; i++) {
+			b.push_back((x >> i) & 1u);
+		}
+	}
+	void print() {
+		long long int k = 0;
+		for (int i(0); i < b.size(); i++) {
+			cout << b[i] ? '1' : '0';
+			if (b[i]) k += pow(2, i);
+		}
+		cout << endl;
+		cout << k << endl;
+	}
+	int operator[](int x)
+	{
+		return b[x] ? 1 : 0;
+	}
+	infint operator<<(int x) {
+		infint sub = *this;
+		for (int i(0); i < x; i++)
+			sub.b.push_front(false);
+		return sub;
+	}
+	infint operator^(infint x) {
+		intmax_t s = (b.size() < x.b.size()) ? b.size() : x.b.size();
+		infint sub1 = (b.size() > x.b.size()) ? *this : x;
+		infint sub2 = !(b.size() > x.b.size()) ? *this : x;
+		for (intmax_t i(0); i < s; i++) {
+			sub1.b[i] ^= sub2.b[i];
+		}
+		return sub1;
+	}
+	void operator=(infint x) {
+		b = x.b;
+	}
+};
 
 struct list_lfsr
 {
@@ -57,7 +100,7 @@ struct gen_lfsr
 		
 	}
 public:
-	int generate() { //todo: переделать генерацию, так как ксорятся все x 
+	int generate() { 
 		int result(0);
 		bool equal(false);
 		list_lfsr* sub_point;
@@ -108,7 +151,7 @@ public:
 	}
 };
 
-void sub_fun(int r, unsigned long long delta, unsigned long long t, unsigned long long c, unsigned long long b, unsigned long long L, int *z) {
+void sub_fun(int r, unsigned long long delta, infint c, infint b, unsigned long long L, int *z) {
 	cout << "\nr " << r << " Zr " << z[r - 1] << " delta " << delta << " c ";// << c << " b " << b;
 	logging("\nr ");
 	logging(r);
@@ -117,24 +160,24 @@ void sub_fun(int r, unsigned long long delta, unsigned long long t, unsigned lon
 	logging(" delta ");
 	logging(delta);
 	logging(" c ");
-	if (c & 1) {
+	if (c[0]) {
 		logging("1");
 		cout << "1";
 	}
-	for (int j = 1; j < sizeof(unsigned long long) * 8; j++) {
-		if ((c >> j) & 1) {
+	for (int j = 1; j < c.b.size(); j++) {
+		if (c[j]) {
 			cout << "+x^" << j;
 			logging("+x^"); logging(j);
 		}
 	}
 	cout << " b ";
 	logging(" b ");
-	if (b & 1) {
+	if (b[0]) {
 		cout << "1";
 		logging("1");
 	}
-	for (int j = 1; j < sizeof(unsigned long long) * 8; j++) {
-		if ((b >> j) & 1) {
+	for (int j = 1; j < b.b.size(); j++) {
+		if (b[j]) {
 			cout << "+x^" << j;
 			logging("+x^"); logging(j);
 		}
@@ -144,16 +187,17 @@ void sub_fun(int r, unsigned long long delta, unsigned long long t, unsigned lon
 }
 
 void difficult(int *z, int count, int *result) {
-	unsigned long long r(0), delta(0), t(0), c(1), b(1), counter(0), L(0);
+	unsigned long long r(0), delta(0), counter(0), L(0);
+	infint t(0), c(1), b(1);
 	for (int i(0); i < count; i++) {
 		r++;
 		delta = (unsigned long long)z[r - 1];
 		for (int j = 1; j <= L; j++) {
-			delta ^= ((c >> j) & 1u)* (unsigned long long)z[r - j - 1];
+			delta ^= c[j]* (unsigned long long)z[r - j - 1];
 		}
 		if (delta == 0) {
 			b = b << 1;
-			sub_fun(r, delta, t, c, b, L, z);
+			sub_fun(r, delta, c, b, L, z);
 			continue;
 		}
 		else {
@@ -163,7 +207,7 @@ void difficult(int *z, int count, int *result) {
 			b = c;
 			c = t;
 			L = r - L;
-			sub_fun(r, delta, t, c, b, L, z);
+			sub_fun(r, delta, c, b, L, z);
 			continue;
 		}
 		else {
@@ -171,18 +215,13 @@ void difficult(int *z, int count, int *result) {
 			b = b << 1;
 		}
 		///вывод
-		sub_fun(r, delta, t, c, b, L, z);
+		sub_fun(r, delta, c, b, L, z);
 	}
 	cout << endl;
 	logging('\n');
 	result[0] = (int)L;
-	result[1] = (int)c;
+	result[1] = (int)5;
 }
-
-//template <class T>
-
-
-
 
 void multip(int* a, int *b, int* result, int size, int first_point) {
 	for (int i(first_point); i < size; i++) {
@@ -271,6 +310,7 @@ public:
 		min_exp = result[1];
 		delete[] result;
 	}
+
 	void gen(int num) {
 		int* mas = new int[num];
 		for (int i(0); i < exp; i++) {
