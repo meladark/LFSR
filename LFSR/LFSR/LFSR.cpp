@@ -100,7 +100,7 @@ struct gen_lfsr
 		
 	}
 public:
-	int generate() { //todo: переделать генерацию, так как ксорятся все x 
+	int generate() { 
 		int result(0);
 		bool equal(false);
 		list_lfsr* sub_point;
@@ -187,7 +187,7 @@ void sub_fun(int r, unsigned long long delta, infint c, infint b, unsigned long 
 }
 
 void difficult(int *z, int count, int *result) {
-	unsigned long long r(0), delta(0),   counter(0), L(0);
+	unsigned long long r(0), delta(0), counter(0), L(0);
 	infint t(0), c(1), b(1);
 	for (int i(0); i < count; i++) {
 		r++;
