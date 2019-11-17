@@ -1,6 +1,11 @@
 ﻿  LFSR.cpp
-F:\LFSR\LFSR\LFSR\LFSR.cpp(39,1): warning C4244: +=: преобразование "double" в "__int64", возможна потеря данных
-F:\LFSR\LFSR\LFSR\LFSR.cpp(200,12): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
-F:\LFSR\LFSR\LFSR\LFSR.cpp(210,12): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
-F:\LFSR\LFSR\LFSR\LFSR.cpp(218,11): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
-  LFSR.vcxproj -> F:\LFSR\LFSR\x64\Debug\LFSR.exe
+E:\LFSR\LFSR\LFSR\LFSR.cpp(39,1): warning C4244: +=: преобразование "double" в "__int64", возможна потеря данных
+E:\LFSR\LFSR\LFSR\LFSR.cpp(103,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\LFSR.cpp(113,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\LFSR.cpp(177,32): warning C4805: ^=: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\LFSR.cpp(177,32): warning C4805: ^: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\LFSR.cpp(181,12): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+E:\LFSR\LFSR\LFSR\LFSR.cpp(191,12): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+E:\LFSR\LFSR\LFSR\LFSR.cpp(199,11): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+E:\LFSR\LFSR\LFSR\LFSR.cpp(279,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+  LFSR.vcxproj -> E:\LFSR\LFSR\x64\Debug\LFSR.exe
