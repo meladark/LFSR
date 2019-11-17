@@ -90,7 +90,7 @@ struct gen_lfsr
 		delete[] polinom;
 	}
 public:
-	bool generate(int num_threads = 1) {
+	bool generate(int num_threads = 2) {
 		///
 		cout << "\nМассив ";
 		logging("\nМассив ");
@@ -368,7 +368,7 @@ void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, bool thrb = 
 		input >> y;
 		for (int j(0); j < (int)y; j++) {
 			input >> sub;
-			lf->push_back((bool)sub);
+			lf->push_front((bool)sub);
 		}
 		deque<bool>* mas = new deque<bool>();
 		for (int j(0); j < (int)y; j++) {
@@ -419,9 +419,9 @@ int main()
 	still_lfsr* LFSR3 = new still_lfsr(polynom, value3);
 	*/
 	//
-	std::ofstream outfile("test1.txt");
+	std::ofstream outfile("test2.txt");
 	vector<still_lfsr*> *all_lfsr = new vector<still_lfsr*>();
-	const char* fn = "E:\\LFSR\\LFSR\\LFSR\\test.hex";
+	const char* fn = "F:\\LFSR\\LFSR\\LFSR\\test2.hex";
 	read_hex_(fn, all_lfsr);
 	operations(all_lfsr);
 	cout << "Время выполнения все программы " << clock() - time << " с";
