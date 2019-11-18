@@ -12,7 +12,17 @@
 
 using namespace std;
 
-//infint difficult(bool* z, int count, int* min_exp);
+template <typename T>
+void logging(T in) {
+	return;
+	ofstream out;
+	out.open("log1.txt", ios::app);
+	if (out.is_open()) {
+		out << in;
+	}
+	out.close();
+}
+
 void sum(bool* a, bool* b, bool* result, int size, int first_point);
 void sum_thread(bool* a, bool* b, bool* result, int size, int num_threads = 5);
 
@@ -62,3 +72,37 @@ public:
 };
 
 void gen_mult(deque<bool>* polinom, deque<bool>* values, bool* result, int size, int first_point);
+infint difficult(bool* z, int count, int* min_exp);
+
+class still_lfsr {
+public:
+	int polynom = 0;
+	int* in_vec_value = NULL; //input vector value
+	bool* generate_vec = new bool[1];
+	infint min_polynom = 0;
+	int* min_exp = new int[1];
+	int exp = 0;
+	gen_lfsr* gn;
+	still_lfsr(deque<bool>* polynom = NULL, deque<bool>* in_vec_value = NULL) {
+		exp = 2 * polynom->size() + 1;
+		gn = new gen_lfsr(polynom, in_vec_value);
+		generate_vec = new bool[exp];
+		for (int i = 0; i < exp; i++) {
+			generate_vec[i] = gn->generate();
+			/*cout << " Сгенерированное значение " << generate_vec[i];
+			logging(" Сгенерированное значение ");
+			logging(generate_vec[i]);*/
+		}
+		min_polynom = difficult(generate_vec, exp, min_exp);
+	}
+	void gen(int num);
+	still_lfsr* operator+ (still_lfsr right);
+	still_lfsr* operator* (still_lfsr right);
+};
+
+void operations(vector<still_lfsr*>* all_lfsr);
+
+void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, bool thrb = true);
+void thr(still_lfsr** all_lfsr, int i, deque<bool>* lf, deque<bool>* mas);
+void sub_fun(int r, unsigned long long delta, infint c, infint b, unsigned long long L, bool* z);
+

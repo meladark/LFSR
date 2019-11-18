@@ -152,7 +152,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="LFSR.cpp" />
+    <ClCompile Include="Main_foo.cpp" />
     <ClCompile Include="Struct_for.cpp" />
+    <ClCompile Include="sup_foo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h" />
