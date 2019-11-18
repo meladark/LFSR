@@ -1,17 +1,11 @@
 ﻿// LFSR.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 
-#include <iostream>
-#include <thread>
-#include <io.h>
-#include <stdio.h>
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include <deque>
-#include <malloc.h>
+#include "Header.h" 
 
 using namespace std;
+
+string log_me;
 
 template <typename T>
 void logging(T in) {
@@ -24,112 +18,9 @@ void logging(T in) {
 	out.close();
 }
 
-struct infint
-{
-	deque<bool> b;
-	infint(int x) {
-		for (int i(0); i < sizeof(x) * 8; i++) {
-			b.push_back((x >> i) & 1u);
-		}
-	}
-	void print() {
-		long long int k = 0;
-		for (int i(0); i < b.size(); i++) {
-			cout << b[i] ? '1' : '0';
-			if (b[i]) k += pow(2, i);
-		}
-		cout << endl;
-		cout << k << endl;
-	}
-	int operator[](int x)
-	{
-		return b[x];
-	}
-	infint operator<<(int x) {
-		infint sub = *this;
-		for (int i(0); i < x; i++)
-			sub.b.push_front(false);
-		return sub;
-	}
-	infint operator^(infint x) {
-		intmax_t s = (b.size() < x.b.size()) ? b.size() : x.b.size();
-		infint sub1 = (b.size() > x.b.size()) ? *this : x;
-		infint sub2 = !(b.size() > x.b.size()) ? *this : x;
-		for (intmax_t i(0); i < s; i++) {
-			sub1.b[i] ^= sub2.b[i];
-		}
-		return sub1;
-	}
-	void operator=(infint x) {
-		b = x.b;
-	}
-};
 
-void gen_mult(deque<bool>* polinom, deque<bool>* values, bool* result, int size, int first_point) {
-	for (int i(first_point); i < size; i++) {
-		result[i] = polinom->at(i) * values->at(i);
-	}
-}
 
-struct gen_lfsr
-{
-	deque<bool>* values;
-	deque<bool>* polinom;
-	gen_lfsr(deque<bool>* polinom, deque<bool>* values) { //
-		this->values = values;
-		this->polinom = polinom;
-		for (int i(0); i < polinom->size(); i++) {
-			if (polinom->at(i)) {
-				std::cout << "x^" << polinom->size() - i - 1 << " + "; logging("+x^"); logging(i); 
-			}
-		}
-		std::cout << "1"; logging("1");
-	}
-	~gen_lfsr() {
-		delete[] values;
-		delete[] polinom;
-	}
-public:
-	bool generate(int num_threads = 2) {
-		///
-		cout << "\nМассив ";
-		logging("\nМассив ");
-		for (int i(0); i < values->size(); i++) {
-			cout << values->at(i);
-		}
-		bool* results = new bool[polinom->size()];
-		vector<thread> threads(num_threads);
-		if (polinom->size() % num_threads == 0) {
-			int new_size = polinom->size() / num_threads;
-			for (int i(0); i < num_threads; i++) {
-				threads[i] = thread(gen_mult, polinom, values, results, new_size * (i + 1), new_size * i);
-			}
-			for (auto& th : threads) {
-				th.join();
-			}
-		}
-		else {
-			int balalne = polinom->size() % num_threads;
-			int whole = polinom->size() / num_threads;
-			for (int i(0); i < num_threads - 1; i++) {
-				threads[i] = thread(gen_mult, polinom, values, results, whole * (i + 1), whole * i);
-			}
-			num_threads--;
-			threads[num_threads] = thread(gen_mult, polinom, values, results, whole * (num_threads + 1) + balalne, whole * num_threads);
-			for (auto& th : threads) {
-				th.join();
-			}
-		}
-		bool out = results[0];
-		for (int i(1); i < polinom->size(); i++) {
-			out ^= results[i];
-		}
-		values->push_front(out);
-		out = values->back();
-		values->pop_back();
-		return out;
-	}
-};
+
 
 void sub_fun(int r, unsigned long long delta, infint c, infint b, unsigned long long L, bool *z) {
 	cout << "\nr " << r << " Zr " << z[r - 1] << " delta " << delta << " c ";// << c << " b " << b;
@@ -166,7 +57,7 @@ void sub_fun(int r, unsigned long long delta, infint c, infint b, unsigned long 
 	logging(" L ");
 }
 
-void difficult(bool *z, int count, int *result) {
+infint difficult(bool *z, int count, int *min_exp) {
 	unsigned long long r(0), counter(0), L(0);
 	bool delta(0);
 	infint t(0), c(1), b(1);
@@ -178,7 +69,7 @@ void difficult(bool *z, int count, int *result) {
 		}
 		if (delta == 0) {
 			b = b << 1;
-			sub_fun(r, delta, c, b, L, z);
+			//sub_fun(r, delta, c, b, L, z);
 			continue;
 		}
 		else {
@@ -188,7 +79,7 @@ void difficult(bool *z, int count, int *result) {
 			b = c;
 			c = t;
 			L = r - L;
-			sub_fun(r, delta, c, b, L, z);
+			//sub_fun(r, delta, c, b, L, z);
 			continue;
 		}
 		else {
@@ -196,12 +87,12 @@ void difficult(bool *z, int count, int *result) {
 			b = b << 1;
 		}
 		///вывод
-		sub_fun(r, delta, c, b, L, z);
+		//sub_fun(r, delta, c, b, L, z);
 	}
-	cout << endl;
-	logging('\n');
-	result[0] = (int)L;
-	result[1] = (int)5;
+	//cout << endl;
+	//logging('\n');
+	min_exp[0] = (int)L;
+	return c;
 }
 
 void multip(bool* a, bool *b, bool* result, int size, int first_point) {
@@ -216,7 +107,7 @@ void sum(bool* a, bool* b, bool* result, int size, int first_point) {
 	}
 }
 
-void multip_thread(bool* a, bool* b, bool* result, int size, int num_threads = 5) {
+void multip_thread(bool* a, bool* b, bool* result, int size, int num_threads) {
 	vector<thread> threads(num_threads);
 	if (size % num_threads == 0) {
 		int new_size = size / num_threads;
@@ -241,7 +132,7 @@ void multip_thread(bool* a, bool* b, bool* result, int size, int num_threads = 5
 	}
 }
 
-void sum_thread(bool* a, bool* b, bool* result, int size, int num_threads = 5) {
+void sum_thread(bool* a, bool* b, bool* result, int size, int num_threads) {
 	vector<thread> threads(num_threads);
 	if (size % num_threads == 0) {
 		int new_size = size / num_threads;
@@ -271,8 +162,8 @@ public:
 	int polynom = 0;
 	int* in_vec_value = NULL; //input vector value
 	bool* generate_vec = new bool[1];
-	int min_polynom = 0;
-	int min_exp = 0;
+	infint min_polynom = 0;
+	int* min_exp = new int[1];
 	int exp = 0;
 	gen_lfsr *gn;
 	still_lfsr(deque<bool>* polynom = NULL, deque<bool>* in_vec_value = NULL) {
@@ -281,15 +172,11 @@ public:
 		generate_vec = new bool[exp];
 		for (int i = 0; i < exp; i++) {
 			generate_vec[i] = gn->generate();
-			cout << " Сгенерированное значение " << generate_vec[i];
+			/*cout << " Сгенерированное значение " << generate_vec[i];
 			logging(" Сгенерированное значение ");
-			logging(generate_vec[i]);
+			logging(generate_vec[i]);*/
 		}
-		int* result = new int[2];
-		difficult(generate_vec, exp, result);
-		min_polynom = result[0];
-		min_exp = result[1];
-		delete[] result;
+		min_polynom = difficult(generate_vec, exp, min_exp);
 	}
 
 	void gen(int num) {
@@ -304,7 +191,7 @@ public:
 		exp = num;
 	}
 	still_lfsr* operator+ (still_lfsr right) {
-		cout << "Сумма" << endl;
+		/*cout << "Сумма" << endl;
 		logging("Сумма\n");
 		for (int i(0); i < right.exp; i++) {
 			cout << i << ") " << generate_vec[i] << " + " << right.generate_vec[i] << endl;
@@ -314,9 +201,9 @@ public:
 			logging(" + ");
 			logging(right.generate_vec[i]);
 			logging('\n');
-		}
+		}*/
 		sum_thread(generate_vec, right.generate_vec, right.generate_vec, exp);
-		cout << "Результат"<<endl;
+		/*cout << "Результат"<<endl;
 		logging("Результат\n");
 		for (int i(0); i < exp; i++) {
 			cout << i << ") " << right.generate_vec[i] << endl;
@@ -324,11 +211,11 @@ public:
 			logging(") ");
 			logging(right.generate_vec[i]);
 			logging('\n');
-		}
+		}*/
 		return &right;
 	}
 	still_lfsr* operator* (still_lfsr right) {
-		cout << "Умножение" << endl;
+		/*cout << "Умножение" << endl;
 		logging("Умножение\n");
 		for (int i(0); i < right.exp; i++) {
 			cout << i << ") " << generate_vec[i] << " * " << right.generate_vec[i] << endl;
@@ -338,16 +225,16 @@ public:
 			logging(" * ");
 			logging(right.generate_vec[i]);
 			logging('\n');
-		}
+		}*/
 		multip_thread(generate_vec, right.generate_vec, right.generate_vec, exp);
-		cout << "Результат" << endl;
+		/*cout << "Результат" << endl;
 		for (int i(0); i < exp; i++) {
 			cout << i << ") " << right.generate_vec[i] << endl;
 			logging(i);
 			logging(") ");
 			logging(right.generate_vec[i]);
 			logging('\n');
-		}
+		}*/
 		return &right;
 	}
 };
@@ -400,8 +287,10 @@ void operations(vector<still_lfsr*> *all_lfsr) {
 	all_lfsr->at(2)->gen(exp);
 	still_lfsr* test1 = *all_lfsr->at(0) * *all_lfsr->at(1);
 	test1 = *test1 + *all_lfsr->at(2);
-	int* result = new int[exp];
-	difficult(test1->generate_vec, exp, result);
+	int* min_exp = new int[0];
+	infint min_polynom = difficult(test1->generate_vec, exp, min_exp);
+	min_polynom.print();
+	cout << endl;
 }
 
 int main()
@@ -421,9 +310,12 @@ int main()
 	//
 	std::ofstream outfile("test2.txt");
 	vector<still_lfsr*> *all_lfsr = new vector<still_lfsr*>();
-	const char* fn = "F:\\LFSR\\LFSR\\LFSR\\test2.hex";
+	const char* fn = "test2.hex";
 	read_hex_(fn, all_lfsr);
 	operations(all_lfsr);
+	log_me = log_me + "hell";
+	log_me += "help";
+	//cout << log_me;
 	cout << "Время выполнения все программы " << clock() - time << " с";
 	logging("Время ввыполнение всей программы ");
 	logging(clock() - time);
