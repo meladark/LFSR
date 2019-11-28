@@ -1,14 +1,14 @@
 ﻿  LFSR.cpp
   Main_foo.cpp
-E:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-E:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-E:\LFSR\LFSR\LFSR\Main_foo.cpp(11,32): warning C4805: ^=: небезопасное смешение типа "bool" и типа "int" в операции
+F:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+F:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+F:\LFSR\LFSR\LFSR\Main_foo.cpp(11,32): warning C4805: ^=: небезопасное смешение типа "bool" и типа "int" в операции
   Struct_for.cpp
-E:\LFSR\LFSR\LFSR\Main_foo.cpp(11,32): warning C4805: ^: небезопасное смешение типа "bool" и типа "int" в операции
-E:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-E:\LFSR\LFSR\LFSR\Struct_for.cpp(59,47): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+F:\LFSR\LFSR\LFSR\Main_foo.cpp(11,32): warning C4805: ^: небезопасное смешение типа "bool" и типа "int" в операции
+F:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+F:\LFSR\LFSR\LFSR\Struct_for.cpp(59,47): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
   sup_foo.cpp
-E:\LFSR\LFSR\LFSR\Struct_for.cpp(69,44): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+F:\LFSR\LFSR\LFSR\Struct_for.cpp(69,44): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
   Создание кода...
-E:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-  LFSR.vcxproj -> E:\LFSR\LFSR\x64\Debug\LFSR.exe
+F:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+  LFSR.vcxproj -> F:\LFSR\LFSR\x64\Debug\LFSR.exe
