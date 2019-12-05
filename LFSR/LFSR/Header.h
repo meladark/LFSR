@@ -107,7 +107,7 @@ public:
 
 void operations(vector<still_lfsr*>* all_lfsr);
 
-void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, bool thrb = true);
+void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, bool thrb = 1);
 void thr(still_lfsr** all_lfsr, int i, deque<bool>* lf, deque<bool>* mas);
 void sub_fun(int r, unsigned long long delta, infint c, infint b, unsigned long long L, bool* z);
 
