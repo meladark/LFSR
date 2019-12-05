@@ -1,11 +1,18 @@
 ﻿  LFSR.cpp
-F:\LFSR\LFSR\LFSR\LFSR.cpp(39,1): warning C4244: +=: преобразование "double" в "__int64", возможна потеря данных
-F:\LFSR\LFSR\LFSR\LFSR.cpp(200,12): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
-F:\LFSR\LFSR\LFSR\LFSR.cpp(210,12): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
-F:\LFSR\LFSR\LFSR\LFSR.cpp(218,11): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+  Main_foo.cpp
+E:\LFSR\LFSR\LFSR\Header.h(92,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\Header.h(92,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(11,32): warning C4805: ^=: небезопасное смешение типа "bool" и типа "int" в операции
+  Struct_for.cpp
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(11,32): warning C4805: ^: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\Header.h(92,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(59,47): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  sup_foo.cpp
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(69,44): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\Header.h(92,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
   Создание кода
-  0 of 465 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  2 of 547 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Создание кода завершено
-  LFSR.vcxproj -> F:\LFSR\LFSR\x64\Release\LFSR.exe
+  LFSR.vcxproj -> E:\LFSR\LFSR\x64\Release\LFSR.exe

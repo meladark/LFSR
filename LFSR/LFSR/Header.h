@@ -36,11 +36,16 @@ struct infint
 		if (x == 0) {
 			b.push_back(0); return;
 		}
+		int bat = 0;
 		for (int i(0); i < sizeof(x) * 8; i++) {
-			b.push_back((x >> i) & 1u);
-		}
-		while (b.back() != true) {
-			b.pop_back();
+			if (((x >> i) & 1u) == 1) {
+				for (int j(0); j < bat; j++) {
+					b.push_back(0);
+				}
+				b.push_back(1);
+				bat = 0;
+			}
+			else bat++;
 		}
 	};
 	void print();
