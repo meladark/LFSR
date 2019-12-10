@@ -53,33 +53,42 @@ bool gen_lfsr::generate(int num_threads) {
 	cout << values->at(i);
 	}*/
 	///
-	bool* results = new bool[polinom->size()];
-	vector<thread> threads(num_threads);
-	if (polinom->size() % num_threads == 0) {
-		int new_size = polinom->size() / num_threads;
-		for (int i(0); i < num_threads; i++) {
-			threads[i] = thread(gen_mult, polinom, values, results, new_size * (i + 1), new_size * i);
-		}
-		for (auto& th : threads) {
-			th.join();
+	bool out;
+	if (num_threads == 1) {
+		out = polinom->at(0) * values->at(0);
+		for (int i(1); i < polinom->size(); i++) {
+			out ^= polinom->at(i) * values->at(i);
 		}
 	}
 	else {
-		int balalne = polinom->size() % num_threads;
-		int whole = polinom->size() / num_threads;
-		for (int i(0); i < num_threads - 1; i++) {
-			threads[i] = thread(gen_mult, polinom, values, results, whole * (i + 1), whole * i);
+		vector<thread> threads(num_threads);
+		bool* results = new bool[polinom->size()];
+		if (polinom->size() % num_threads == 0) {
+			int new_size = polinom->size() / num_threads;
+			for (int i(0); i < num_threads; i++) {
+				threads[i] = thread(gen_mult, polinom, values, results, new_size * (i + 1), new_size * i);
+			}
+			for (auto& th : threads) {
+				th.join();
+			}
 		}
-		num_threads--;
-		threads[num_threads] = thread(gen_mult, polinom, values, results, whole * (num_threads + 1) + balalne, whole * num_threads);
-		for (auto& th : threads) {
-			th.join();
+		else {
+			int balalne = polinom->size() % num_threads;
+			int whole = polinom->size() / num_threads;
+			for (int i(0); i < num_threads - 1; i++) {
+				threads[i] = thread(gen_mult, polinom, values, results, whole * (i + 1), whole * i);
+			}
+			num_threads--;
+			threads[num_threads] = thread(gen_mult, polinom, values, results, whole * (num_threads + 1) + balalne, whole * num_threads);
+			for (auto& th : threads) {
+				th.join();
+			}
 		}
-	}
-	bool out = results[0];
-	for (int i(1); i < polinom->size(); i++) {
-		out ^= results[i];
-	}
+		out = results[0];
+		for (int i(1); i < polinom->size(); i++) {
+			out ^= results[i];
+		}
+	}	
 	values->push_front(out);
 	out = values->back();
 	values->pop_back();
@@ -88,18 +97,21 @@ bool gen_lfsr::generate(int num_threads) {
 
 void still_lfsr::gen(int num) {
 	bool* mas = new bool[num];
-	for (int i(0); i < exp; i++) {
+	for (int i(0); i < 2 * exp + 1; i++) {
 		mas[i] = generate_vec[i];
 	}
-	for (int i(exp); i < num; i++) {
-		mas[i] = gn->generate();
+	for (int i(2 * exp + 1); i < num; i++) {
+		mas[i] = gn->generate(1);
 	}
+	//delete[] generate_vec;
 	generate_vec = mas;
+	//delete[] mas;
 	exp = num;
 };
 
+
 still_lfsr* still_lfsr::operator+ (still_lfsr right) {
-	/*cout << "Сумма" << endl;
+	cout << "Сумма" << endl;
 	logging("Сумма\n");
 	for (int i(0); i < right.exp; i++) {
 		cout << i << ") " << generate_vec[i] << " + " << right.generate_vec[i] << endl;
@@ -109,9 +121,9 @@ still_lfsr* still_lfsr::operator+ (still_lfsr right) {
 		logging(" + ");
 		logging(right.generate_vec[i]);
 		logging('\n');
-	}*/
+	}
 	sum_thread(generate_vec, right.generate_vec, right.generate_vec, exp);
-	/*cout << "Результат"<<endl;
+	cout << "Результат"<<endl;
 	logging("Результат\n");
 	for (int i(0); i < exp; i++) {
 		cout << i << ") " << right.generate_vec[i] << endl;
@@ -119,12 +131,12 @@ still_lfsr* still_lfsr::operator+ (still_lfsr right) {
 		logging(") ");
 		logging(right.generate_vec[i]);
 		logging('\n');
-	}*/
+	}
 	return &right;
 };
 
 still_lfsr* still_lfsr::operator* (still_lfsr right) {
-	/*cout << "Умножение" << endl;
+	cout << "Умножение" << endl;
 	logging("Умножение\n");
 	for (int i(0); i < right.exp; i++) {
 		cout << i << ") " << generate_vec[i] << " * " << right.generate_vec[i] << endl;
@@ -134,15 +146,15 @@ still_lfsr* still_lfsr::operator* (still_lfsr right) {
 		logging(" * ");
 		logging(right.generate_vec[i]);
 		logging('\n');
-	}*/
+	}
 	multip_thread(generate_vec, right.generate_vec, right.generate_vec, exp);
-	/*cout << "Результат" << endl;
+	cout << "Результат" << endl;
 	for (int i(0); i < exp; i++) {
 		cout << i << ") " << right.generate_vec[i] << endl;
 		logging(i);
 		logging(") ");
 		logging(right.generate_vec[i]);
 		logging('\n');
-	}*/
+	}
 	return &right;
 };

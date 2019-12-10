@@ -1,8 +1,8 @@
 #include "Header.h"
 
-void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, bool thrb) {
+void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, deque<bool>* combination, bool thrb) {
 	ifstream input(file_txt, ios::binary);
-	char x('h'), y('k'), sub('o');
+	unsigned char x('h'), y('k'), sub('o');
 	input >> x;
 	vector<thread> threads((int)x);
 	still_lfsr** stl = (still_lfsr**)malloc((int)x * sizeof(still_lfsr*));
@@ -11,7 +11,7 @@ void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, bool thrb) {
 		input >> y;
 		for (int j(0); j < (int)y; j++) {
 			input >> sub;
-			lf->push_front((bool)sub);
+			lf->push_back((bool)sub);
 		}
 		deque<bool>* mas = new deque<bool>();
 		for (int j(0); j < (int)y; j++) {
@@ -32,6 +32,14 @@ void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, bool thrb) {
 		for (int i(0); i < (int)x; i++) {
 			all_lfsr->push_back(stl[i]);
 		}
+	}
+	input >> y;
+	//if (x == 85)
+	input >> y;
+	//if (x == 170)
+	for (int i(0); i < (int)pow(2, (int)x); i++) {
+		input >> y;
+		combination->push_back((bool)y);
 	}
 	input.close();
 }

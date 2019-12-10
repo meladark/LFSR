@@ -24,13 +24,11 @@ int main()
 	//
 	//std::ofstream outfile("test2.txt");
 	vector<still_lfsr*> *all_lfsr = new vector<still_lfsr*>();
-	const char* fn = "test2.hex";
-	read_hex_(fn, all_lfsr);
-	operations(all_lfsr);
-	log_me = log_me + "hell";
-	log_me += "help";
-	//cout << log_me;
-	cout << "Время выполнения все программы " << clock() - time << " с";
+	const char* fn = "Big.bin";
+	deque<bool>* combination = new deque<bool>();
+	read_hex_(fn, all_lfsr, combination, false);
+	operations(all_lfsr, combination);
+	cout << "Время выполнения все программы " << (clock() - time)/1000 << " с";
 	logging("Время ввыполнение всей программы ");
 	logging(clock() - time);
 	logging(" c");
