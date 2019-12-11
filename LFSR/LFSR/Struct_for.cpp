@@ -1,6 +1,14 @@
 #include "Header.h"
 
 using namespace std;
+
+extern int th_sum_thread;
+extern int th_multip_thread;
+extern int th_generate;
+extern int th_num_threads_gen;
+extern bool th_num_threads_comb;
+extern bool th_read_hex;
+
 void infint::print() {
 	long long int k = 0;
 	for (int i(0); i < b.size(); i++) {
@@ -53,6 +61,7 @@ bool gen_lfsr::generate(int num_threads) {
 	cout << values->at(i);
 	}*/
 	///
+	num_threads = th_generate;
 	bool out;
 	if (num_threads == 1) {
 		out = polinom->at(0) * values->at(0);
@@ -101,7 +110,7 @@ void still_lfsr::gen(int num) {
 		mas[i] = generate_vec[i];
 	}
 	for (int i(2 * exp + 1); i < num; i++) {
-		mas[i] = gn->generate(1);
+		mas[i] = gn->generate();
 	}
 	//delete[] generate_vec;
 	generate_vec = mas;
@@ -111,7 +120,7 @@ void still_lfsr::gen(int num) {
 
 
 still_lfsr* still_lfsr::operator+ (still_lfsr right) {
-	cout << "Сумма" << endl;
+	/*cout << "Сумма" << endl;
 	logging("Сумма\n");
 	for (int i(0); i < right.exp; i++) {
 		cout << i << ") " << generate_vec[i] << " + " << right.generate_vec[i] << endl;
@@ -121,9 +130,10 @@ still_lfsr* still_lfsr::operator+ (still_lfsr right) {
 		logging(" + ");
 		logging(right.generate_vec[i]);
 		logging('\n');
-	}
-	sum_thread(generate_vec, right.generate_vec, right.generate_vec, exp);
-	cout << "Результат"<<endl;
+	}*/
+	still_lfsr* result = new still_lfsr(NULL, NULL, right.exp);
+	sum_thread(generate_vec, right.generate_vec, result->generate_vec, exp);
+	/*cout << "Результат"<<endl;
 	logging("Результат\n");
 	for (int i(0); i < exp; i++) {
 		cout << i << ") " << right.generate_vec[i] << endl;
@@ -131,12 +141,12 @@ still_lfsr* still_lfsr::operator+ (still_lfsr right) {
 		logging(") ");
 		logging(right.generate_vec[i]);
 		logging('\n');
-	}
-	return &right;
+	}*/
+	return result;
 };
 
 still_lfsr* still_lfsr::operator* (still_lfsr right) {
-	cout << "Умножение" << endl;
+	/*cout << "Умножение" << endl;
 	logging("Умножение\n");
 	for (int i(0); i < right.exp; i++) {
 		cout << i << ") " << generate_vec[i] << " * " << right.generate_vec[i] << endl;
@@ -146,15 +156,16 @@ still_lfsr* still_lfsr::operator* (still_lfsr right) {
 		logging(" * ");
 		logging(right.generate_vec[i]);
 		logging('\n');
-	}
-	multip_thread(generate_vec, right.generate_vec, right.generate_vec, exp);
-	cout << "Результат" << endl;
+	}*/
+	still_lfsr *result = new still_lfsr(NULL, NULL, right.exp);
+	multip_thread(generate_vec, right.generate_vec, result->generate_vec, exp);
+	/*cout << "Результат" << endl;
 	for (int i(0); i < exp; i++) {
-		cout << i << ") " << right.generate_vec[i] << endl;
+		cout << i << ") " << result->generate_vec[i] << endl;
 		logging(i);
 		logging(") ");
-		logging(right.generate_vec[i]);
+		logging(result->generate_vec[i]);
 		logging('\n');
-	}
-	return &right;
+	}*/
+	return result;
 };

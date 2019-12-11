@@ -5,33 +5,20 @@
 
 using namespace std;
 
-string log_me;
-
-int main()
+int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
-	double time = clock();
-	/*bool value[5] = { 1,0,0,0,0 };
-	bool polynom(23);
-	still_lfsr* LFSR1 = new still_lfsr(polynom, value);
-	polynom = 25;
-	int value2[4] = { 1,0,1,0 };
-	still_lfsr* LFSR2 = new still_lfsr(polynom, value2);
-	polynom = 35;
-	bool value3[6] = { 0,1,0,0,0,1 };
-	still_lfsr* LFSR3 = new still_lfsr(polynom, value3);
-	*/
-	//
-	//std::ofstream outfile("test2.txt");
 	vector<still_lfsr*> *all_lfsr = new vector<still_lfsr*>();
-	const char* fn = "Big.bin";
+	read_param(argv[2]);
+	char* fn = argv[1];
 	deque<bool>* combination = new deque<bool>();
+	double time = clock();
 	read_hex_(fn, all_lfsr, combination, false);
 	operations(all_lfsr, combination);
 	cout << "Время выполнения все программы " << (clock() - time)/1000 << " с";
-	logging("Время ввыполнение всей программы ");
+	/*logging("Время ввыполнение всей программы ");
 	logging(clock() - time);
-	logging(" c");
+	logging(" c");*/
 	std::cout << "\nHello World!\n";
 }
 

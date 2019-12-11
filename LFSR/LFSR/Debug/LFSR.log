@@ -1,2 +1,23 @@
 ﻿  LFSR.cpp
-  LFSR.vcxproj -> F:\LFSR\LFSR\Debug\LFSR.exe
+  Main_foo.cpp
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(19,32): warning C4805: ^=: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(19,32): warning C4805: ^: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(155,19): warning C4018: <: несоответствие типов со знаком и без знака
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(181,20): warning C4018: <: несоответствие типов со знаком и без знака
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(217,20): warning C4018: <: несоответствие типов со знаком и без знака
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(257,20): warning C4018: <: несоответствие типов со знаком и без знака
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(313,22): warning C4018: <: несоответствие типов со знаком и без знака
+  Struct_for.cpp
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(14,19): warning C4018: <: несоответствие типов со знаком и без знака
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(20,19): warning C4018: <: несоответствие типов со знаком и без знака
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(41,10): warning C4244: аргумент: преобразование "intmax_t" в "unsigned int", возможна потеря данных
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(41,23): warning C4244: аргумент: преобразование "intmax_t" в "unsigned int", возможна потеря данных
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(67,20): warning C4018: <: несоответствие типов со знаком и без знака
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(68,41): warning C4805: ^=: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(68,41): warning C4805: ^: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(96,20): warning C4018: <: несоответствие типов со знаком и без знака
+  sup_foo.cpp
+E:\LFSR\LFSR\LFSR\sup_foo.cpp(72,20): warning C4018: <: несоответствие типов со знаком и без знака
+E:\LFSR\LFSR\LFSR\sup_foo.cpp(84,20): warning C4018: <: несоответствие типов со знаком и без знака
+  Создание кода...
+  LFSR.vcxproj -> E:\LFSR\LFSR\Debug\LFSR.exe

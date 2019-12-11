@@ -1,6 +1,14 @@
 #include "Header.h"
 
-void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, deque<bool>* combination, bool thrb) {
+extern int th_sum_thread;
+extern int th_multip_thread;
+extern int th_generate;
+extern int th_num_threads_gen;
+extern bool th_num_threads_comb;
+extern bool th_read_hex;
+
+void read_hex_(char* file_txt, vector<still_lfsr*>* all_lfsr, deque<bool>* combination, bool thrb) {
+	thrb = th_read_hex;
 	ifstream input(file_txt, ios::binary);
 	unsigned char x('h'), y('k'), sub('o');
 	input >> x;
@@ -84,3 +92,33 @@ void sub_fun(int r, unsigned long long delta, infint c, infint b, unsigned long 
 	logging(" L ");
 }
 
+int th_sum_thread;
+int th_multip_thread;
+int th_generate;
+int th_num_threads_gen;
+bool th_num_threads_comb;
+bool th_read_hex;
+
+void read_param(char* file_txt) {
+	ifstream input(file_txt);
+	int x = 0;
+	input >> x;
+	th_read_hex = x;
+	cout << "read_hex = " << x << endl;
+	input >> x;
+	th_generate = x;
+	cout << "generate = " << x << endl;
+	input >> x;
+	th_sum_thread = x;
+	cout << "sum_thread = " << x << endl;
+	input >> x;
+	th_multip_thread = x;
+	cout << "multip_thread = " << x << endl;
+	input >> x;
+	th_num_threads_gen = x;
+	cout << "operation_gen = " << x << endl;
+	input >> x;
+	th_num_threads_comb = x;
+	cout << "operation_comb = " << x << endl;
+	
+}

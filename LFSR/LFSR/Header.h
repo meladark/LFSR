@@ -24,10 +24,10 @@ void logging(T in) {
 }
 
 void sum(bool* a, bool* b, bool* result, int size, int first_point);
-void sum_thread(bool* a, bool* b, bool* result, int size, int num_threads = 4);
+void sum_thread(bool* a, bool* b, bool* result, int size, int num_threads =	1);
 
 void multip(bool* a, bool* b, bool* result, int size, int first_point);
-void multip_thread(bool* a, bool* b, bool* result, int size, int num_threads = 4);
+void multip_thread(bool* a, bool* b, bool* result, int size, int num_threads = 1);
 
 struct infint
 {
@@ -83,12 +83,13 @@ public:
 	int* min_exp = new int[1];
 	int exp = 0;
 	gen_lfsr* gn;
-	still_lfsr(deque<bool>* polynom = NULL, deque<bool>* in_vec_value = NULL) {
+	still_lfsr(deque<bool>* polynom = NULL, deque<bool>* in_vec_value = NULL, int size_vec = 10) {
+		if (polynom == NULL && in_vec_value == NULL) {
+			generate_vec = new bool[size_vec];
+			exp = size_vec;
+			return;
+		}
 		exp = polynom->size();
-		/*cout << "Вывод still_lfsr !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-		for (int i(0); i < polynom->size(); i++) 
-			cout << polynom->at(i);
-		cout << endl;*/
 		gn = new gen_lfsr(polynom, in_vec_value);
 
 		generate_vec = new bool[2 * exp + 1];
@@ -105,9 +106,12 @@ public:
 	still_lfsr* operator* (still_lfsr right);
 };
 
-void operations(vector<still_lfsr*>* all_lfsr, deque<bool>* combination, int num_threads = 2);
+void operations(vector<still_lfsr*>* all_lfsr, deque<bool>* combination, int num_threads_gen = 1, bool num_threads_comb = 1);
 
-void read_hex_(const char* file_txt, vector<still_lfsr*>* all_lfsr, deque<bool>* combination, bool thrb = true);
+void read_hex_(char* file_txt, vector<still_lfsr*>* all_lfsr, deque<bool>* combination, bool thrb = true);
 void thr(still_lfsr** all_lfsr, int i, deque<bool>* lf, deque<bool>* mas);
-void sub_fun(int r, unsigned long long delta, infint c, infint b, unsigned long long L, bool* z);
 
+void operations_thread(int fond, still_lfsr* stl, int i, vector<still_lfsr*>* all_lfsr);
+void opertations_th(vector<still_lfsr*>* sub_result, int right, int left);
+
+void read_param(char* file_txt);

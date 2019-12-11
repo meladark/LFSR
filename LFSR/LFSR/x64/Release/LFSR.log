@@ -1,17 +1,21 @@
-﻿  LFSR.cpp
-F:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppClean.targets(76,5): warning : Отказано в доступе по пути "e:\lfsr\lfsr\x64\release\lfsr.exe".
+  LFSR.cpp
+E:\LFSR\LFSR\LFSR\Header.h(92,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
   Main_foo.cpp
-F:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-F:\LFSR\LFSR\LFSR\Main_foo.cpp(12,32): warning C4805: ^=: небезопасное смешение типа "bool" и типа "int" в операции
-F:\LFSR\LFSR\LFSR\Main_foo.cpp(12,32): warning C4805: ^: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\Header.h(92,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(19,32): warning C4805: ^=: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(19,32): warning C4805: ^: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(189,30): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(294,34): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\Main_foo.cpp(298,59): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
   Struct_for.cpp
-F:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-F:\LFSR\LFSR\LFSR\Struct_for.cpp(59,47): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-F:\LFSR\LFSR\LFSR\Struct_for.cpp(69,44): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\Header.h(92,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(69,41): warning C4805: ^=: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(69,41): warning C4805: ^: небезопасное смешение типа "bool" и типа "int" в операции
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(76,48): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+E:\LFSR\LFSR\LFSR\Struct_for.cpp(86,45): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
   sup_foo.cpp
-F:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-  Создание кода
-  Compiler version has changed, fall back to full compilation.
-  All 527 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Создание кода завершено
-  LFSR.vcxproj -> F:\LFSR\LFSR\x64\Release\LFSR.exe
+E:\LFSR\LFSR\LFSR\Header.h(92,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+  Компиляция...
+LINK : fatal error LNK1104: не удается открыть файл "E:\LFSR\LFSR\x64\Release\LFSR.exe"
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(847,5): error MSB6006: "link.exe" завершилась с кодом 1104.

@@ -1,3 +1,6 @@
 ﻿  LFSR.cpp
-F:\LFSR\LFSR\LFSR\Header.h(87,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-  LFSR.vcxproj -> F:\LFSR\LFSR\x64\Debug\LFSR.exe
+E:\LFSR\LFSR\LFSR\Header.h(92,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+  sup_foo.cpp
+E:\LFSR\LFSR\LFSR\Header.h(92,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+  Создание кода...
+  LFSR.vcxproj -> E:\LFSR\LFSR\x64\Debug\LFSR.exe
